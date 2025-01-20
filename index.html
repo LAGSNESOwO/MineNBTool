@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>MineNBTool</title>
+  <!-- 移动端适配 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 引入外部 CSS 文件 -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 顶部栏 -->
+  <header>
+    <button id="openNav" onclick="openNav()">☰</button>
+    <h1 class="header-title">MineNBTool</h1>
+  </header>
+
+  <!-- 左侧抽屉导航 -->
+  <div class="nav-drawer" id="navDrawer">
+    <button class="close-button" onclick="closeNav()">×</button>
+    <ul>
+      <li onclick="showPage('homePage')">主页</li>
+      <li onclick="showPage('tutorialPage')">教程</li>
+      <li onclick="showPage('aboutPage')">关于</li>
+    </ul>
+  </div>
+
+  <!-- 主体内容：page-content (主页/教程/关于) -->
+  <main>
+
+    <!-- ========== 主页 ========== -->
+    <div id="homePage" class="page-content active">
+      <!-- 新增卡片：注意事项 -->
+      <div class="card">
+        <h2>注意</h2>
+        <p>请点击导航栏查看使用教程</p>
+      </div>
+
+      <!-- 卡片：物品信息 -->
+      <div class="card">
+        <h2>物品信息</h2>
+        <div style="margin-top: 12px;">
+          <label for="itemID">物品名 (数字ID或 minecraft:xxx)：</label>
+          <input type="text" id="itemID" class="text-field" placeholder="例如：minecraft:diamond_sword 或 276" />
+        </div>
+      </div>
+
+      <!-- 卡片：NBT游戏版本选择 -->
+      <div class="card">
+        <h2>NBT游戏版本</h2>
+        <div style="margin-top: 8px;">
+          <label style="display:block; margin-bottom:6px;">
+            <input type="radio" name="gameVersion" value="new" checked /> 1.13 - 1.20.2
+          </label>
+          <label style="display:block; margin-bottom:6px;">
+            <input type="radio" name="gameVersion" value="old" /> 1.7 - 1.12.2
+          </label>
+        </div>
+      </div>
+
+      <!-- 卡片：附魔选择(多选框 + 折叠/展开 + 全选/反选 + 添加) -->
+      <div class="card">
+        <h2>附魔选择</h2>
+
+        <!-- 3个按钮放在一个容器里，通过flex控制间距 -->
+        <div class="card-buttons">
+          <button class="collapse-btn" onclick="toggleCollapse('enchantCardContent')">折叠/展开</button>
+          <button class="checkall-btn" onclick="toggleSelectAll()">全选/反选</button>
+          <button class="add-enchant-btn" onclick="openAddEnchantModal()">添加</button>
+        </div>
+
+        <div id="enchantCardContent" class="collapse-content">
+          <!-- 这里使用多选checkbox（内置） -->
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:sharpness"> 锋利 (Sharpness)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:smite"> 亡灵杀手 (Smite)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:bane_of_arthropods"> 节肢杀手 (Bane of Arthropods)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:knockback"> 击退 (Knockback)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:fire_aspect"> 火焰附加 (Fire Aspect)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:looting"> 掠夺 (Looting)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:sweeping"> 横扫之刃 (Sweeping Edge)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:mending"> 经验修补 (Mending)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:unbreaking"> 耐久 (Unbreaking)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:curse_of_vanishing"> 消失诅咒 (Curse of Vanishing)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:curse_of_binding"> 绑定诅咒 (Curse of Binding)</label>
+          </div>
+
+          <hr />
+
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:protection"> 保护 (Protection)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:fire_protection"> 火焰保护 (Fire Protection)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:blast_protection"> 爆炸保护 (Blast Protection)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:projectile_protection"> 弹射物保护 (Projectile Protection)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:thorns"> 荆棘 (Thorns)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:respiration"> 水下呼吸 (Respiration)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:aqua_affinity"> 水下速掘 (Aqua Affinity)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:depth_strider"> 深海探索者 (Depth Strider)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:frost_walker"> 冰霜行者 (Frost Walker)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:soul_speed"> 灵魂疾行 (Soul Speed)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:swift_sneak"> 潜行迅捷 (Swift Sneak)</label>
+          </div>
+
+          <hr />
+
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:power"> 力量 (Power)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:punch"> 冲击 (Punch)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:flame"> 火矢 (Flame)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:infinity"> 无限 (Infinity)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:loyalty"> 忠诚 (Loyalty)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:channeling"> 引雷 (Channeling)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:riptide"> 激流 (Riptide)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:impaling"> 穿刺 (Impaling)</label>
+          </div>
+
+          <hr />
+
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:multishot"> 多重射击 (Multishot)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:quick_charge"> 快速装填 (Quick Charge)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:piercing"> 穿透 (Piercing)</label>
+          </div>
+
+          <hr />
+
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:luck_of_the_sea"> 海之眷顾 (Luck of the Sea)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:lure"> 饵钓 (Lure)</label>
+          </div>
+
+          <hr />
+
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:efficiency"> 效率 (Efficiency)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:fortune"> 时运 (Fortune)</label>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:silk_touch"> 精准采集 (Silk Touch)</label>
+          </div>
+
+          <hr />
+
+          <div style="margin-bottom: 8px;">
+            <label><input type="checkbox" value="minecraft:cleaving"> 劈砍 (Cleaving)</label>
+          </div>
+
+          <!-- 用户自定义附魔区（JS动态插入） -->
+          <hr />
+          <div id="userEnchantContainer"></div>
+        </div>
+      </div>
+
+      <!-- 卡片：附魔等级、自定义名称、颜色 -->
+      <div class="card">
+        <h2>附加属性</h2>
+        <div style="margin-top:12px;">
+          <!-- 取消 min/max 限制 -->
+          <label for="enchantmentLevel">附魔等级：</label>
+          <input type="number" id="enchantmentLevel" class="text-field" value="1" />
+        </div>
+        <div style="margin-top:12px;">
+          <label for="customName">物品自定义名称：</label>
+          <input type="text" id="customName" class="text-field" placeholder="例如：我的屠龙宝刀" />
+        </div>
+        <div style="margin-top:12px;">
+          <label for="nameColor">物品名称颜色：</label>
+          <input type="color" id="nameColor" class="text-field" value="#ffffff" style="height:40px;" />
+        </div>
+      </div>
+
+      <!-- 卡片：生成命令与结果 -->
+      <div class="card">
+        <h2>生成命令</h2>
+        <button class="button" onclick="generateCommand()">生成命令</button>
+        <!-- 复制命令按钮 -->
+        <button class="button" style="margin-left:8px;" onclick="copyCommand()">复制命令</button>
+        
+        <textarea id="result" class="text-field" readonly placeholder="这里会显示生成的命令" style="height:100px; margin-top: 12px;"></textarea>
+      </div>
+    </div>
+
+    <!-- ========== 教程页面 ========== -->
+    <div id="tutorialPage" class="page-content">
+      <div class="card">
+        <h2>MineNBTool 教程</h2>
+        <ol>
+          <li>如果你需要某个物品的附魔，首先需要知道该物品的ID。可以按 <strong>F3+H</strong> 打开高级显示（部分旧版本不支持）来查看物品ID，也可以在网上搜索对应ID。</li>
+          <li>在页面上填入物品ID后，勾选或添加你想要的附魔。如果内置列表里没有该附魔，可以点击“添加”按钮输入自定义附魔名称和附魔ID。</li>
+          <li>注意，一些附魔仅在高版本可用。如果选择的附魔与版本不兼容，附魔将不会起效。</li>
+          <li>如果生成的指令过长，可以使用命令方块执行。输入 <code>/give @p minecraft:command_block</code> 即可获得命令方块。</li>
+          <li>你可以自定义物品名称与颜色，但旧版本Minecraft可能不支持JSON语法，也可能导致名称无法正常显示。</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ========== 关于页面 ========== -->
+    <div id="aboutPage" class="page-content">
+      <!-- 关于 -->
+      <div class="card">
+        <h2>关于</h2>
+        <div class="about-info">
+          <p>MineNBTool：一个简易的 Minecraft NBT/附魔工具。</p>
+          <p>
+            GitHub仓库：
+            <a href="https://github.com/LAGSNESOwO/MineNBTool" target="_blank">
+              https://github.com/LAGSNESOwO/MineNBTool
+            </a>
+          </p>
+        </div>
+      </div>
+      <!-- 永久链接 -->
+      <div class="card">
+        <h2>永久链接</h2>
+        <div class="about-info">
+          <p>
+            GitHub Pages：
+            <a href="https://lagsnesowo.github.io/MineNBTool" target="_blank">
+              https://lagsnesowo.github.io/MineNBTool
+            </a>
+          </p>
+          <p>
+            Cloudflare Pages(中国大陆速度更快)：
+            <a href="https://minenbtool.lagsn.es" target="_blank">
+              https://minenbtool.lagsn.es
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 复制成功的模态弹窗 -->
+  <div class="modal" id="copyModal">
+    <div class="modal-content">
+      <p>复制成功！</p>
+      <button onclick="closeModal()">关闭</button>
+    </div>
+  </div>
+
+  <!-- 添加自定义附魔的模态框 -->
+  <div class="modal" id="addEnchantModal">
+    <div class="modal-content">
+      <h3 style="margin-top:0">添加自定义附魔</h3>
+      <div style="margin-bottom:8px; text-align:left;">
+        <label for="customEnchantName">展示名称：</label>
+        <input type="text" id="customEnchantName" class="text-field" placeholder="如：死触 (Deadly Touch)" />
+      </div>
+      <div style="margin-bottom:8px; text-align:left;">
+        <label for="customEnchantId">附魔ID：</label>
+        <input type="text" id="customEnchantId" class="text-field" placeholder="如：minecraft:deadly_touch" />
+      </div>
+      <button class="button" style="margin-top:12px;" onclick="confirmAddEnchant()">确认添加</button>
+      <button class="button" style="margin-left:8px;" onclick="closeAddEnchantModal()">取消</button>
+    </div>
+  </div>
+
+  <!-- 引入外部 JavaScript 文件 -->
+  <script src="js/script.js"></script>
+</body>
+</html>
