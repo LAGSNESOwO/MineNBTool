@@ -321,20 +321,8 @@ const MINECRAFT_PROMPT = `你是一个 Minecraft 指令师，你需要生成用�
 // 存储对话历史
 let chatHistory = [];
 
-// 初始化聊天，设置系统消息
-function initChat() {
-  // 清空现有历史
-  chatHistory = [];
-  // 添加系统提示
-  chatHistory.push({ role: 'system', content: MINECRAFT_PROMPT });
-  
-  // 添加欢迎消息
-  const welcomeMessage = '你好！我是 Minecraft 指令师。有什么 Minecraft 指令相关的问题需要帮助吗？';
-  addMessage(welcomeMessage, false);
-}
-
 // 添加消息到聊天区域（支持Markdown）
-function addMessage(content, isUser = false) {
+function addMessage(content, isUser = false, isWelcome = false) {
   const messagesContainer = document.getElementById('chatMessages');
   
   if (isUser) {
@@ -345,45 +333,67 @@ function addMessage(content, isUser = false) {
     messagesContainer.appendChild(messageDiv);
     return messageDiv;
   } else {
-    // AI消息 - 添加容器和计时器
-    const messageContainer = document.createElement('div');
-    messageContainer.className = 'ai-message-container';
-    
-    // 创建消息本体
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message ai-message';
-    
-    // 转换 Markdown 为 HTML
-    messageDiv.innerHTML = marked.parse(content);
-    
-    // 创建计时器
-    const timerSpan = document.createElement('span');
-    timerSpan.className = 'ai-timer';
-    timerSpan.textContent = '0.0秒';
-    timerSpan.dataset.startTime = Date.now().toString();
-    
-    // 添加到容器
-    messageContainer.appendChild(messageDiv);
-    messageContainer.appendChild(timerSpan);
-    
-    // 添加容器到聊天区域
-    messagesContainer.appendChild(messageContainer);
-    
-    // 开始计时器
-    const timerId = setInterval(() => {
-      const startTime = parseInt(timerSpan.dataset.startTime);
-      const elapsedSeconds = (Date.now() - startTime) / 1000;
-      timerSpan.textContent = elapsedSeconds.toFixed(1) + '秒';
-    }, 100);
-    
-    // 保存计时器ID以便后续停止
-    timerSpan.dataset.timerId = timerId.toString();
-    
-    // 滚动到底部
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    
-    return messageDiv;
+    // AI消息
+    if (isWelcome) {
+      // 欢迎消息 - 没有计时器
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message ai-message';
+      messageDiv.innerHTML = marked.parse(content);
+      messagesContainer.appendChild(messageDiv);
+      return messageDiv;
+    } else {
+      // 普通AI消息 - 添加容器和计时器
+      const messageContainer = document.createElement('div');
+      messageContainer.className = 'ai-message-container';
+      
+      // 创建消息本体
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message ai-message';
+      
+      // 转换 Markdown 为 HTML
+      messageDiv.innerHTML = marked.parse(content);
+      
+      // 创建计时器
+      const timerSpan = document.createElement('span');
+      timerSpan.className = 'ai-timer';
+      timerSpan.textContent = '0.0秒';
+      timerSpan.dataset.startTime = Date.now().toString();
+      
+      // 添加到容器
+      messageContainer.appendChild(messageDiv);
+      messageContainer.appendChild(timerSpan);
+      
+      // 添加容器到聊天区域
+      messagesContainer.appendChild(messageContainer);
+      
+      // 开始计时器
+      const timerId = setInterval(() => {
+        const startTime = parseInt(timerSpan.dataset.startTime);
+        const elapsedSeconds = (Date.now() - startTime) / 1000;
+        timerSpan.textContent = elapsedSeconds.toFixed(1) + '秒';
+      }, 100);
+      
+      // 保存计时器ID以便后续停止
+      timerSpan.dataset.timerId = timerId.toString();
+      
+      // 滚动到底部
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      
+      return messageDiv;
+    }
   }
+}
+
+// 初始化聊天，设置系统消息
+function initChat() {
+  // 清空现有历史
+  chatHistory = [];
+  // 添加系统提示
+  chatHistory.push({ role: 'system', content: MINECRAFT_PROMPT });
+  
+  // 添加欢迎消息，标记为欢迎消息
+  const welcomeMessage = '你好！我是 Minecraft 指令师。有什么 Minecraft 指令相关的问题需要帮助吗？';
+  addMessage(welcomeMessage, false, true);
 }
 
 // 清除所有消息并重新初始化聊天
