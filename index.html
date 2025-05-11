@@ -15,6 +15,7 @@
   <header>
     <button id="openNav" onclick="openNav()">☰</button>
     <h1 class="header-title">MineNBTool</h1>
+    <button id="darkModeToggle" class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="切换深色模式">🌓</button>
   </header>
 
   <!-- 左侧抽屉导航 -->
@@ -34,8 +35,11 @@
     <!-- ========== 主页 ========== -->
     <div id="homePage" class="page-content active">
       <!-- 新增卡片：注意事项 -->
-      <div class="card">
-        <h2>注意</h2>
+      <div class="card" id="noticeCard">
+        <div class="card-header">
+          <h2>注意</h2>
+          <button class="close-card-button" onclick="closeNoticeCard()">×</button>
+        </div>
         <p>请点击导航栏查看使用教程</p>
       </div>
 
@@ -319,6 +323,14 @@
               https://minenbtool.lagsn.es
             </a>
           </p>
+        </div>
+      </div>
+      <!-- 高级设置 -->
+      <div class="card">
+        <h2>高级</h2>
+        <div class="about-info">
+          <p>危险区域：以下操作将清除您的所有本地数据。</p>
+          <button class="danger-button" onclick="clearAllData()">清除全部数据</button>
         </div>
       </div>
     </div>

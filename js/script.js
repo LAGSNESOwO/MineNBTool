@@ -11,6 +11,26 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   // 构建自定义附魔UI
   buildUserEnchantsUI();
+  
+  // 检查公告卡片可见性
+  checkNoticeCardVisibility();
+  
+  // 初始化深色模式
+  detectColorScheme();
+  setupColorSchemeListener();
+  
+  // 初始化聊天
+  const userMessageInput = document.getElementById('userMessage');
+  if (userMessageInput) {
+    initChat();
+    
+    userMessageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault(); // 阻止默认的换行
+        sendMessage();
+      }
+    });
+  }
 });
 
 // ========== 导航抽屉逻辑 ==========
@@ -312,22 +332,6 @@ function initChat() {
   addMessage(welcomeMessage, false);
 }
 
-// 页面加载时初始化聊天
-document.addEventListener('DOMContentLoaded', () => {
-  const userMessageInput = document.getElementById('userMessage');
-  if (userMessageInput) {
-    // 初始化聊天
-    initChat();
-    
-    userMessageInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault(); // 阻止默认的换行
-        sendMessage();
-      }
-    });
-  }
-});
-
 // 添加消息到聊天区域（支持Markdown）
 function addMessage(content, isUser = false) {
   const messagesContainer = document.getElementById('chatMessages');
@@ -449,5 +453,104 @@ async function sendMessage() {
     // 更新加载消息为错误信息
     loadingMessage.textContent = '发生错误，请重试。';
     loadingMessage.classList.add('error-message');
+  }
+}
+
+// ========== 深色模式 ==========
+// 检测系统深色模式偏好
+function detectColorScheme() {
+  // 先从本地存储中获取用户偏好
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    return;
+  }
+  
+  // 如果用户没有设置偏好，则检测系统偏好
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+}
+
+// 切换深色/浅色模式
+function toggleDarkMode() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  
+  document.documentElement.setAttribute('data-theme', newTheme);
+  // 保存偏好到本地存储
+  localStorage.setItem('theme', newTheme);
+}
+
+// 监听系统深色模式偏好变化
+function setupColorSchemeListener() {
+  if (window.matchMedia) {
+    const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    // 如果用户没有明确设置偏好，则跟随系统变化
+    colorSchemeQuery.addEventListener('change', (e) => {
+      // 仅当用户没有自定义设置时才跟随系统
+      if (!localStorage.getItem('theme')) {
+        const newTheme = e.matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+      }
+    });
+  }
+}
+
+// ========== 公告卡片关闭逻辑 ==========
+function closeNoticeCard() {
+  const noticeCard = document.getElementById('noticeCard');
+  if (noticeCard) {
+    noticeCard.style.display = 'none';
+    
+    // 记住用户已关闭公告卡片
+    localStorage.setItem('noticeCardClosed', 'true');
+  }
+}
+
+// 检查是否应该显示公告卡片
+function checkNoticeCardVisibility() {
+  const noticeCard = document.getElementById('noticeCard');
+  if (noticeCard) {
+    const isClosed = localStorage.getItem('noticeCardClosed') === 'true';
+    if (isClosed) {
+      noticeCard.style.display = 'none';
+    }
+  }
+}
+
+// ========== 清除所有数据 ==========
+function clearAllData() {
+  // 显示确认对话框
+  if (confirm('确定要清除所有数据吗？这将删除您的所有自定义附魔、历史记录和设置，包括已关闭的通知卡片等。此操作无法撤销。')) {
+    // 清除所有本地存储
+    localStorage.clear();
+    
+    // 重置自定义附魔数组
+    userEnchants = [];
+    
+    // 重建UI
+    buildUserEnchantsUI();
+    
+    // 重新显示通知卡片
+    const noticeCard = document.getElementById('noticeCard');
+    if (noticeCard) {
+      noticeCard.style.display = 'block';
+    }
+    
+    // 重置聊天历史
+    clearMessages();
+    
+    // 重置主题为系统默认
+    detectColorScheme();
+    
+    // 提示用户
+    alert('所有数据已清除。页面将刷新以应用更改。');
+    
+    // 刷新页面以确保所有更改生效
+    window.location.reload();
   }
 }
