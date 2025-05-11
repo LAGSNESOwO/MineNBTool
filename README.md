@@ -4,6 +4,7 @@
 **立即使用** [GhPages](https://lagsnesowo.github.io/MineNBTool) | [CfPages](https://minenbtool.lagsn.es)
 
 ## 特点
+ - **DeepSeek-V3 大模型 AI 一键生成指令，方便快捷**
  - UI 界面舒适，适合普通用户
  - 操作方便快捷
  - 可自定义物品 NBT 名称、颜色
