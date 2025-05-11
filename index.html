@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- 引入外部 CSS 文件 -->
   <link rel="stylesheet" href="css/style.css" />
+  <!-- 引入 Markdown 渲染库 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
   <!-- 顶部栏 -->
@@ -20,6 +22,7 @@
     <button class="close-button" onclick="closeNav()">×</button>
     <ul>
       <li onclick="showPage('homePage')">主页</li>
+      <li onclick="showPage('aiChatPage')">AI 聊天</li>
       <li onclick="showPage('tutorialPage')">教程</li>
       <li onclick="showPage('aboutPage')">关于</li>
     </ul>
@@ -34,6 +37,13 @@
       <div class="card">
         <h2>注意</h2>
         <p>请点击导航栏查看使用教程</p>
+      </div>
+
+      <!-- 新增卡片：AI 对话 -->
+      <div class="card">
+        <h2>AI 对话</h2>
+        <p>点击导航栏的 "AI 聊天" 选项，开始与 AI 对话</p>
+        <button class="button" onclick="showPage('aiChatPage')">开始聊天</button>
       </div>
 
       <!-- 卡片：物品信息 -->
@@ -242,13 +252,35 @@
       </div>
     </div>
 
+    <!-- ========== AI 聊天页面 ========== -->
+    <div id="aiChatPage" class="page-content">
+      <div class="card">
+        <h2>AI 聊天</h2>
+        <div class="chat-container">
+          <div class="chat-messages" id="chatMessages">
+            <!-- 聊天消息将在这里动态添加 -->
+          </div>
+          <div class="chat-input">
+            <textarea id="userMessage" class="text-field" placeholder="输入您的问题..."></textarea>
+            <div class="chat-buttons">
+              <button class="button" onclick="sendMessage()">发送</button>
+              <button class="button" onclick="clearMessages()">清除</button>
+            </div>
+          </div>
+        </div>
+        <div class="chat-footer">
+          <p>由 <a href="https://breathai.top" target="_blank">BreathAI（breathai.top）</a> 提供支持</p>
+        </div>
+      </div>
+    </div>
+
     <!-- ========== 教程页面 ========== -->
     <div id="tutorialPage" class="page-content">
       <div class="card">
         <h2>MineNBTool 教程</h2>
         <ol>
           <li>如果你需要某个物品的附魔，首先需要知道该物品的ID。可以按 <strong>F3+H</strong> 打开高级显示（部分旧版本不支持）来查看物品ID，也可以在网上搜索对应ID。</li>
-          <li>在页面上填入物品ID后，勾选或添加你想要的附魔。如果内置列表里没有该附魔，可以点击“添加”按钮输入自定义附魔名称和附魔ID。</li>
+          <li>在页面上填入物品ID后，勾选或添加你想要的附魔。如果内置列表里没有该附魔，可以点击"添加"按钮输入自定义附魔名称和附魔ID。</li>
           <li>注意，一些附魔仅在高版本可用。如果选择的附魔与版本不兼容，附魔将不会起效。</li>
           <li>如果生成的指令过长，可以使用命令方块执行。输入 <code>/give @p minecraft:command_block</code> 即可获得命令方块。</li>
           <li>你可以自定义物品名称与颜色，但旧版本Minecraft可能不支持JSON语法，也可能导致名称无法正常显示。</li>
