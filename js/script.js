@@ -375,7 +375,7 @@ async function sendMessage() {
   userMessageInput.value = '';
   
   // 添加加载中消息
-  const loadingMessage = addMessage('正在加载...', false);
+  const loadingMessage = addMessage('AI 正在思考，需要 3-5 秒...', false);
   loadingMessage.classList.add('loading-message');
   
   // 更新聊天历史（排除系统消息，仅添加用户消息）
