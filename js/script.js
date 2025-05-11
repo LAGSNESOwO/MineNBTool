@@ -306,6 +306,7 @@ const MINECRAFT_PROMPT = `你是一个 Minecraft 指令师，你需要生成用�
    e) 如果用户对指令的某些部分有疑问，耐心解答并提供更详细的解释。
    f) 在适当的时候，可以介绍相关的指令知识，例如选择器、坐标系统等。
    g) 你的回复应以一个关于你的回答的单行问题或陈述作为结尾。
+   h) 你的回复应使用 Markdown 格式，指令必须写在代码块内。
 
 3) 关于
    a) 你基于 DeepSeek-V3
@@ -335,24 +336,54 @@ function initChat() {
 // 添加消息到聊天区域（支持Markdown）
 function addMessage(content, isUser = false) {
   const messagesContainer = document.getElementById('chatMessages');
-  const messageDiv = document.createElement('div');
   
-  messageDiv.className = isUser ? 'message user-message' : 'message ai-message';
-  
-  // 使用Markdown渲染内容（如果不是用户消息）
-  if (!isUser) {
+  if (isUser) {
+    // 用户消息 - 简单添加
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message user-message';
+    messageDiv.textContent = content;
+    messagesContainer.appendChild(messageDiv);
+    return messageDiv;
+  } else {
+    // AI消息 - 添加容器和计时器
+    const messageContainer = document.createElement('div');
+    messageContainer.className = 'ai-message-container';
+    
+    // 创建消息本体
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message ai-message';
+    
     // 转换 Markdown 为 HTML
     messageDiv.innerHTML = marked.parse(content);
-  } else {
-    // 用户消息保持纯文本
-    messageDiv.textContent = content;
+    
+    // 创建计时器
+    const timerSpan = document.createElement('span');
+    timerSpan.className = 'ai-timer';
+    timerSpan.textContent = '0.0秒';
+    timerSpan.dataset.startTime = Date.now().toString();
+    
+    // 添加到容器
+    messageContainer.appendChild(messageDiv);
+    messageContainer.appendChild(timerSpan);
+    
+    // 添加容器到聊天区域
+    messagesContainer.appendChild(messageContainer);
+    
+    // 开始计时器
+    const timerId = setInterval(() => {
+      const startTime = parseInt(timerSpan.dataset.startTime);
+      const elapsedSeconds = (Date.now() - startTime) / 1000;
+      timerSpan.textContent = elapsedSeconds.toFixed(1) + '秒';
+    }, 100);
+    
+    // 保存计时器ID以便后续停止
+    timerSpan.dataset.timerId = timerId.toString();
+    
+    // 滚动到底部
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    
+    return messageDiv;
   }
-  
-  messagesContainer.appendChild(messageDiv);
-  // 滚动到底部
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  
-  return messageDiv; // 返回消息元素以便后续更新
 }
 
 // 清除所有消息并重新初始化聊天
@@ -377,6 +408,9 @@ async function sendMessage() {
   // 添加加载中消息
   const loadingMessage = addMessage('AI 正在思考，需要 3-5 秒...', false);
   loadingMessage.classList.add('loading-message');
+  
+  // 获取计时器元素
+  const timerSpan = loadingMessage.nextElementSibling;
   
   // 更新聊天历史（排除系统消息，仅添加用户消息）
   // 如果历史为空，添加系统消息
@@ -448,11 +482,25 @@ async function sendMessage() {
     // 更新聊天历史
     chatHistory.push({ role: 'assistant', content: aiResponse });
     
+    // 停止计时器并显示最终时间
+    if (timerSpan && timerSpan.dataset.timerId) {
+      clearInterval(parseInt(timerSpan.dataset.timerId));
+      const startTime = parseInt(timerSpan.dataset.startTime);
+      const elapsedSeconds = (Date.now() - startTime) / 1000;
+      timerSpan.textContent = elapsedSeconds.toFixed(1) + '秒';
+    }
+    
   } catch (error) {
     console.error('AI聊天错误:', error);
     // 更新加载消息为错误信息
     loadingMessage.textContent = '发生错误，请重试。';
     loadingMessage.classList.add('error-message');
+    
+    // 停止计时器
+    if (timerSpan && timerSpan.dataset.timerId) {
+      clearInterval(parseInt(timerSpan.dataset.timerId));
+      timerSpan.textContent = '失败';
+    }
   }
 }
 

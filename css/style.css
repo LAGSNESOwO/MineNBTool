@@ -520,3 +520,18 @@
     background-color: #cc0000;
   }
   
+  .ai-message-container {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    max-width: 80%;
+  }
+  
+  .ai-timer {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px;
+    margin-left: 10px;
+    align-self: flex-start;
+  }
+  
