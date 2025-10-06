@@ -1,537 +1,467 @@
-:root {
-    --dynamic-color-primary: #4285F4;
-    --dynamic-color-secondary: #03DAC6;
-    --dynamic-color-background: #F5F5F5;
-    --dynamic-color-surface: #FFFFFF;
-    --dynamic-color-on-primary: #FFFFFF;
-    --dynamic-color-on-secondary: #000000;
-    --dynamic-color-on-background: #000000;
-    --dynamic-color-on-surface: #000000;
-    --dynamic-color-danger: #FF0000;
-  }
-  
-  /* 深色模式变量 */
-  [data-theme="dark"] {
-    --dynamic-color-primary: #4f8eff;
-    --dynamic-color-secondary: #00ddc1;
-    --dynamic-color-background: #121212;
-    --dynamic-color-surface: #1e1e1e;
-    --dynamic-color-on-primary: #FFFFFF;
-    --dynamic-color-on-secondary: #000000;
-    --dynamic-color-on-background: #FFFFFF;
-    --dynamic-color-on-surface: #FFFFFF;
-    --dynamic-color-danger: #FF5252;
-  }
-  
-  body {
-    margin: 0;
-    font-family: 'Google Sans', sans-serif;
-    font-size: 14px;
-    background-color: var(--dynamic-color-background);
-    color: var(--dynamic-color-on-background);
-    -webkit-text-size-adjust: 100%;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  /* 顶部栏 */
-  header {
-    background-color: var(--dynamic-color-primary);
-    color: var(--dynamic-color-on-primary);
-    padding: 12px;
-    font-size: 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-  }
-  .header-title {
-    flex-grow: 1;
-    text-align: center;
-    margin: 0;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 18px;
-  }
-  header button {
-    background-color: var(--dynamic-color-secondary);
-    color: var(--dynamic-color-on-secondary);
-    border: none;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1001;
-  
-    /* 兼容移动端，使其看起来还是一个按钮 */
-    -webkit-appearance: button;
-    appearance: button;
-  }
-  
-  /* 左侧导航抽屉 */
-  .nav-drawer {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100%;
-    background-color: var(--dynamic-color-surface);
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    padding-top: 60px;
-    transition: transform 0.3s ease-in-out;
-    z-index: 1000;
-  }
-  .nav-drawer.open {
-    display: block;
-  }
-  .nav-drawer ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  .nav-drawer ul li {
-    padding: 16px;
-    border-bottom: 1px solid var(--dynamic-color-background);
-    cursor: pointer;
-  }
-  .nav-drawer ul li:hover {
-    background-color: var(--dynamic-color-background);
-  }
-  .nav-drawer .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: var(--dynamic-color-secondary);
-    color: var(--dynamic-color-on-secondary);
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  
-    -webkit-appearance: button;
-    appearance: button;
-  }
-  
-  /* 主体内容 */
-  main {
-    padding: 12px;
-    padding-bottom: 60px; /* 给底部留点空隙，便于手机端查看 */
-  }
-  .page-content {
-    display: none;
-  }
-  .page-content.active {
-    display: block;
-  }
-  
-  /* 卡片样式 */
-  .card {
-    background-color: var(--dynamic-color-surface);
-    color: var(--dynamic-color-on-surface);
-    border-radius: 16px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 16px;
-    padding: 12px;
-    position: relative;
-    font-size: 14px;
-  }
-  .card h2 {
-    margin: 0;
-    font-size: 18px;
-    display: inline-block;
-  }
-  
-  /* 放置"折叠/展开"、"全选/反选"、"添加"按钮的容器 */
-  .card-buttons {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    flex-wrap: wrap; /* 避免屏幕过窄时按钮挤在同一行 */
-  }
-  
-  /* 按钮样式（统一） */
-  .collapse-btn,
-  .checkall-btn,
-  .add-enchant-btn,
-  .button,
-  .danger-button {
-    border: none;
-    border-radius: 16px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 14px;
-  
-    -webkit-appearance: button;
-    appearance: button;
-  }
-  
-  /* 具体颜色定义 */
-  .collapse-btn,
-  .checkall-btn {
-    background-color: var(--dynamic-color-secondary);
-    color: var(--dynamic-color-on-secondary);
-  }
-  .add-enchant-btn {
-    background-color: var(--dynamic-color-primary);
-    color: var(--dynamic-color-on-primary);
-  }
-  .button {
-    background-color: var(--dynamic-color-secondary);
-    color: var(--dynamic-color-on-secondary);
-    margin-top: 12px;
-  }
-  .danger-button {
-    background-color: var(--dynamic-color-danger);
-    color: #FFFFFF;
-    margin-top: 12px;
-  }
-  
-  /* 文本框 */
-  .text-field {
-    width: calc(100% - 16px);
-    padding: 8px;
-    margin-top: 8px;
-    border: 1px solid var(--dynamic-color-secondary);
-    border-radius: 8px;
-    font-size: 14px;
-    outline: none;
-    display: block;
-  }
-  
-  /* 折叠内容区域 */
-  .collapse-content {
-    margin-top: 16px;
-  }
-  .collapse-content.hidden {
-    display: none;
-  }
-  
-  /* 关于/教程等页面示例 */
-  .about-info {
-    margin-top: 12px;
-    line-height: 1.6;
-  }
-  
-  /* 模态窗 */
-  .modal {
-    display: none; /* 默认隐藏 */
-    position: fixed;
-    z-index: 2000; /* 要在抽屉之上 */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden; 
-    background-color: rgba(0,0,0,0.5); /* 半透明背景 */
-    justify-content: center;
-    align-items: center;
-  }
-  .modal.active {
-    display: flex;
-  }
-  .modal-content {
-    background-color: var(--dynamic-color-surface);
-    color: var(--dynamic-color-on-surface);
-    border-radius: 12px;
-    padding: 16px;
-    width: 80%;
-    max-width: 300px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    position: relative;
-  }
-  .modal-content button {
-    margin-top: 12px;
-    padding: 6px 16px;
-    border: none;
-    background-color: var(--dynamic-color-primary);
-    color: var(--dynamic-color-on-primary);
-    border-radius: 8px;
-    cursor: pointer;
-  
-    -webkit-appearance: button;
-    appearance: button;
-  }
-  
-  /* 自定义附魔项的删除按钮 */
-  .delete-button {
-    background-color: var(--dynamic-color-danger);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    margin-left: 8px;
-    cursor: pointer;
-    font-size: 12px;
-    padding: 2px 6px;
-  
-    -webkit-appearance: button;
-    appearance: button;
-  }
-  .delete-button:hover {
-    background-color: #cc0000;
-  }
-  
-  /* 响应式：大于768px时，卡片居中显示 */
-  @media (min-width: 768px) {
-    .card {
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
-  
-  /* 聊天界面样式 */
-  .chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 60vh;
-    max-height: 600px;
-    margin-top: 12px;
-  }
-  
-  .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    margin-bottom: 10px;
-  }
-  
-  .chat-input {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .chat-input textarea {
-    height: 60px;
-    resize: none;
-    margin-bottom: 10px;
-  }
-  
-  .chat-buttons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .message {
-    margin-bottom: 12px;
-    max-width: 80%;
-    padding: 8px 12px;
-    border-radius: 12px;
-    position: relative;
-  }
-  
-  .user-message {
-    background-color: var(--dynamic-color-primary);
-    color: var(--dynamic-color-on-primary);
-    align-self: flex-end;
-    margin-left: auto;
-    border-bottom-right-radius: 4px;
-  }
-  
-  .ai-message {
-    background-color: #e0e0e0;
-    color: #333;
-    align-self: flex-start;
-    border-bottom-left-radius: 4px;
-  }
-  
-  .loading-message {
-    background-color: #e0e0e0;
-    color: #666;
-    font-style: italic;
-  }
-  
-  .chat-footer {
-    margin-top: 10px;
-    text-align: center;
-    font-size: 12px;
-    color: #666;
-  }
-  
-  .chat-footer a {
-    color: var(--dynamic-color-primary);
-    text-decoration: none;
-  }
-  
-  .chat-footer a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Markdown样式 */
-  .ai-message code {
-    background-color: #f0f0f0;
-    padding: 2px 4px;
-    border-radius: 3px;
-    font-family: monospace;
-    font-size: 0.9em;
-    white-space: pre-wrap;
-  }
-  
-  .ai-message pre {
-    background-color: #f0f0f0;
-    padding: 8px;
-    border-radius: 4px;
-    overflow-x: auto;
-    margin: 8px 0;
-  }
-  
-  .ai-message pre code {
-    background-color: transparent;
-    padding: 0;
-  }
-  
-  .ai-message p {
-    margin: 0.5em 0;
-  }
-  
-  .ai-message ul, .ai-message ol {
-    margin: 0.5em 0;
-    padding-left: 20px;
-  }
-  
-  .ai-message table {
-    border-collapse: collapse;
-    margin: 8px 0;
-  }
-  
-  .ai-message th, .ai-message td {
-    border: 1px solid #ddd;
-    padding: 6px;
-  }
-  
-  .ai-message th {
-    background-color: #f2f2f2;
-  }
-  
-  .ai-message a {
-    color: var(--dynamic-color-primary);
-    text-decoration: none;
-  }
-  
-  .ai-message a:hover {
-    text-decoration: underline;
-  }
-  
-  .ai-message blockquote {
-    border-left: 3px solid #ddd;
-    margin: 0;
-    padding-left: 10px;
-    color: #666;
-  }
-  
-  /* 深色模式下的Markdown样式调整 */
-  [data-theme="dark"] .ai-message code {
-    background-color: #2a2a2a;
-  }
-  
-  [data-theme="dark"] .ai-message pre {
-    background-color: #2a2a2a;
-  }
-  
-  [data-theme="dark"] .ai-message th {
-    background-color: #333;
-  }
-  
-  [data-theme="dark"] .ai-message th, 
-  [data-theme="dark"] .ai-message td {
-    border-color: #444;
-  }
-  
-  [data-theme="dark"] .ai-message blockquote {
-    border-left-color: #555;
-    color: #aaa;
-  }
-  
-  [data-theme="dark"] .chat-messages {
-    background-color: #1a1a1a;
-  }
-  
-  [data-theme="dark"] .ai-message {
-    background-color: #2a2a2a;
-    color: #e0e0e0;
-  }
-  
-  [data-theme="dark"] .loading-message {
-    background-color: #2a2a2a;
-    color: #999;
-  }
-  
-  /* 深色模式切换按钮 */
-  .dark-mode-toggle {
-    background-color: transparent;
-    color: var(--dynamic-color-on-primary);
-    border: none;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1001;
-    padding: 0;
-    
-    -webkit-appearance: button;
-    appearance: button;
-  }
-  
-  /* 卡片标题和关闭按钮 */
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  
-  .close-card-button {
-    background-color: var(--dynamic-color-danger);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 16px;
-    line-height: 1;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-  
-    -webkit-appearance: button;
-    appearance: button;
-  }
-  
-  .close-card-button:hover {
-    background-color: #cc0000;
-  }
-  
-  .ai-message-container {
-    display: flex;
-    flex-direction: column;
-    align-self: flex-start;
-    max-width: 80%;
-  }
-  
-  .ai-timer {
-    font-size: 11px;
-    color: #888;
-    margin-top: 2px;
-    margin-left: 10px;
-    align-self: flex-start;
-  }
-  
+/* =========================
+   MineNBTool 现代扁平主题
+   - 兼容：不使用 color-mix/oklab 等实验特性
+   - 要点：黑/白导航栏、透明按钮、#0064FF 蓝、#53B88F 绿
+   - 圆角与输入框一致、定制 checkbox/radio、全站字体统一
+   - 柔和动效，支持减少动态（prefers-reduced-motion）
+   ========================= */
+
+/* -------- 主题变量（浅色） -------- */
+:root{
+  --brand-blue: #0064FF;
+  --brand-green: #53B88F;
+  --brand-danger: #FF4D4F;
+
+  --bg: #F7F8FA;
+  --surface: #FFFFFF;
+  --text: #0F172A;
+  --text-subtle: #475569;
+  --border: rgba(15,23,42,0.14);
+  --border-strong: rgba(15,23,42,0.22);
+
+  --bar-bg: #FFFFFF;  /* 导航栏浅色 = 白 */
+  --bar-fg: #0F172A;  /* 导航栏前景 */
+  --shadow-1: 0 2px 10px rgba(0,0,0,0.06);
+  --shadow-2: 0 8px 30px rgba(0,0,0,0.12);
+
+  --radius-sm: 10px;      /* 输入框/按钮统一圆角 */
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --fs-base: 14px;
+  --fs-title: 18px;
+
+  --motion-fast: 150ms;
+  --motion-normal: 220ms;
+  --motion-slow: 360ms;
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --ease-emph: cubic-bezier(.16,1,.3,1);
+}
+
+/* -------- 深色主题变量 -------- */
+[data-theme="dark"]{
+  --bg: #0B0D12;
+  --surface: #12151C;
+  --text: #E5E7EB;
+  --text-subtle: #B6C2D2;
+  --border: rgba(255,255,255,0.12);
+  --border-strong: rgba(255,255,255,0.22);
+
+  --bar-bg: #000000; /* 导航栏深色 = 黑 */
+  --bar-fg: #FFFFFF;
+}
+
+/* -------- 全局基础 -------- */
+*,
+*::before,
+*::after{ box-sizing: border-box; }
+
+html,body{ height:100%; }
+
+html, body, button, input, select, textarea{
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "Google Sans", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+               "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif !important;
+}
+
+body{
+  margin:0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+  transition: background-color var(--motion-normal) var(--ease),
+              color var(--motion-normal) var(--ease);
+}
+
+a{ color: var(--brand-blue); text-decoration: none; }
+a:hover{ text-decoration: underline; }
+
+/* 自定义焦点：柔和高亮，无黑色描边 */
+:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0,100,255,0.22);
+  border-radius: 6px;
+}
+
+/* -------- 顶部栏（黑/白 & 透明按钮） -------- */
+header{
+  position: sticky; top:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:8px;
+  padding:12px 12px;
+  background-color: var(--bar-bg) !important;
+  color: var(--bar-fg) !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.header-title{
+  margin:0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--fs-title);
+  letter-spacing:.2px;
+  color: var(--bar-fg);
+}
+
+/* 顶栏按钮：透明、无边框、圆角与输入框一致 */
+header button,
+header .dark-mode-toggle{
+  width:36px; height:36px;
+  background: transparent !important;
+  color: var(--bar-fg) !important;
+  border: none !important;
+  border-radius: var(--radius-sm) !important;
+  display:flex; align-items:center; justify-content:center;
+  cursor: pointer;
+  transition: background-color var(--motion-normal) var(--ease), transform var(--motion-fast) var(--ease);
+}
+header button:hover,
+header .dark-mode-toggle:hover{
+  background-color: rgba(127,127,127,0.08) !important; /* 浅色 */
+}
+[data-theme="dark"] header button:hover,
+[data-theme="dark"] header .dark-mode-toggle:hover{
+  background-color: rgba(255,255,255,0.10) !important; /* 深色 */
+}
+header button:active,
+header .dark-mode-toggle:active{ transform: translateY(0); }
+
+/* -------- 左侧抽屉导航 -------- */
+.nav-drawer{
+  display:none;
+  position:fixed; top:0; left:0;
+  width:280px; height:100vh;
+  background-color: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-2);
+  padding-top:60px;
+  z-index:1000;
+  transform: translateX(-12px);
+  transition: transform var(--motion-slow) var(--ease), opacity var(--motion-slow) var(--ease);
+  border-right: 1px solid var(--border);
+}
+.nav-drawer.open{ display:block; transform: translateX(0); }
+
+.nav-drawer .close-button{
+  position:absolute; top:10px; right:10px;
+  width:30px; height:30px;
+  background: transparent;
+  color: inherit;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+}
+.nav-drawer ul{ margin:0; padding:0; list-style:none; }
+.nav-drawer ul li{
+  padding:14px 18px;
+  border-bottom: 1px solid var(--border);
+  cursor:pointer;
+}
+.nav-drawer ul li:hover{ background: rgba(0,0,0,0.04); }
+[data-theme="dark"] .nav-drawer ul li:hover{ background: rgba(255,255,255,0.06); }
+
+/* -------- 主体/分页 -------- */
+main{ padding:16px; padding-bottom:64px; }
+.page-content{ display:none; }
+.page-content.active{ display:block; }
+
+/* -------- 卡片 -------- */
+.card{
+  background-color: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding:14px;
+  margin:16px auto;
+  max-width: 760px;
+}
+.card h2{ margin:0; font-size:18px; font-weight:600; letter-spacing:.2px; }
+
+.card-header{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:8px;
+}
+.close-card-button{
+  width:24px; height:24px;
+  background: var(--brand-danger);
+  color:#fff;
+  border:none;
+  border-radius: var(--radius-sm);
+  cursor:pointer;
+}
+
+/* -------- 统一按钮体系（圆角与输入框一致） -------- */
+.button,
+.collapse-btn,
+.checkall-btn,
+.add-enchant-btn,
+.danger-button{
+  display:inline-flex; align-items:center; justify-content:center;
+  gap:6px;
+  padding:8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0,0,0,0.12);
+  cursor:pointer;
+  font-size:14px;
+  transition: transform var(--motion-fast) var(--ease), filter var(--motion-fast) var(--ease), background-color var(--motion-fast) var(--ease);
+}
+
+.button,
+.collapse-btn,
+.checkall-btn{       /* 默认绿色 */
+  background-color: var(--brand-green);
+  color:#fff;
+}
+.add-enchant-btn{   /* 需要蓝色的按钮 */
+  background-color: var(--brand-blue);
+  color:#fff;
+}
+.danger-button{     /* 危险操作 */
+  background-color: var(--brand-danger);
+  color:#fff;
+  border-color: rgba(0,0,0,0.12);
+}
+
+/* 悬停/按下手感 */
+.button:hover,
+.collapse-btn:hover,
+.checkall-btn:hover,
+.add-enchant-btn:hover,
+.danger-button:hover{ filter: brightness(1.04); transform: translateY(-1px); }
+.button:active,
+.collapse-btn:active,
+.checkall-btn:active,
+.add-enchant-btn:active,
+.danger-button:active{ transform: translateY(0); }
+
+/* 统一按钮容器 */
+.card-buttons{ display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 10px; }
+
+/* -------- 输入/文本域（统一圆角/无黑框） -------- */
+.text-field{
+  display:block;
+  width:100%;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: #fff;
+  color: var(--text);
+  outline:none;
+  transition: border-color var(--motion-normal) var(--ease), box-shadow var(--motion-normal) var(--ease), background-color var(--motion-normal) var(--ease);
+}
+[data-theme="dark"] .text-field{ background-color: rgba(255,255,255,0.06); }
+.text-field::placeholder{ color: rgba(0,0,0,0.4); }
+[data-theme="dark"] .text-field::placeholder{ color: rgba(255,255,255,0.5); }
+.text-field:focus{
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 4px rgba(0,100,255,0.18);
+}
+
+/* -------- 折叠区域 -------- */
+.collapse-content{ margin-top:12px; }
+.collapse-content.hidden{ display:none; }
+
+/* -------- 分隔线 -------- */
+hr{
+  border: 0;
+  height: 1px;
+  background-color: var(--border);
+  margin: 12px 0;
+}
+
+/* -------- 模态窗 -------- */
+.modal{
+  display:none;
+  position:fixed; inset:0;
+  z-index:2000;
+  background-color: rgba(0,0,0,0.5);
+  justify-content:center; align-items:center;
+  backdrop-filter: blur(4px);
+}
+.modal.active{ display:flex; }
+.modal-content{
+  width:min(88%, 360px);
+  background-color: var(--surface);
+  color: var(--text);
+  border:1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-2);
+  padding:16px;
+  text-align:center;
+}
+.modal-content button{
+  margin-top:12px;
+  padding:8px 16px;
+  border-radius: var(--radius-sm);
+  border:1px solid rgba(0,0,0,0.12);
+  background-color: var(--brand-blue);
+  color:#fff;
+  cursor:pointer;
+}
+
+/* -------- 复选框 & 单选框（自定义） -------- */
+/* 说明：优先用完全自绘，确保一致性；如需更原生可把这段注释并开启 accent-color 方案 */
+
+input[type="checkbox"],
+input[type="radio"]{
+  -webkit-appearance: none;
+  appearance: none;
+  width:16px; height:16px;
+  margin: 0 6px 0 0;
+  position: relative;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1.5px solid var(--border-strong);
+  outline: none;
+  transition: background-color var(--motion-normal) var(--ease),
+              border-color var(--motion-normal) var(--ease),
+              box-shadow var(--motion-normal) var(--ease);
+  vertical-align: -2px;
+}
+[data-theme="dark"] input[type="checkbox"],
+[data-theme="dark"] input[type="radio"]{
+  background-color: rgba(255,255,255,0.06);
+}
+
+/* 复选框：圆角小方块 + 钩 */
+input[type="checkbox"]{ border-radius: 4px; }
+input[type="checkbox"]:checked{
+  background-color: var(--brand-blue);
+  border-color: var(--brand-blue);
+}
+input[type="checkbox"]:checked::after{
+  content:"";
+  position:absolute;
+  left:4px; top:1px;
+  width:5px; height:9px;
+  border-right:2px solid #fff;
+  border-bottom:2px solid #fff;
+  transform: rotate(45deg);
+}
+
+/* 单选框：圆形 + 中心点 */
+input[type="radio"]{ border-radius: 50%; }
+input[type="radio"]:checked{
+  border-color: var(--brand-blue);
+  background:
+    radial-gradient(circle at center, var(--brand-blue) 0 45%, transparent 46%);
+}
+
+/* 交互状态 */
+input[type="checkbox"]:hover,
+input[type="radio"]:hover{ box-shadow: 0 0 0 4px rgba(0,0,0,0.06); }
+[data-theme="dark"] input[type="checkbox"]:hover,
+[data-theme="dark"] input[type="radio"]:hover{ box-shadow: 0 0 0 4px rgba(255,255,255,0.08); }
+
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible{
+  box-shadow: 0 0 0 4px rgba(0,100,255,0.22);
+}
+
+/* （可选）如果你更想用系统控件但统一颜色，可启用下面3行并把上面自绘方案注释
+input[type="checkbox"], input[type="radio"]{ appearance:auto; accent-color: var(--brand-blue); }
+*/
+
+/* -------- 聊天界面 -------- */
+.chat-container{
+  display:flex; flex-direction:column;
+  height:60vh; max-height:640px;
+  margin-top:12px; gap:10px;
+}
+.chat-messages{
+  flex:1; overflow-y:auto; padding:12px;
+  background-color: #f4f6fb;
+  border:1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+[data-theme="dark"] .chat-messages{ background-color: #121826; }
+
+.chat-input{ display:flex; flex-direction:column; gap:10px; }
+.chat-buttons{ display:flex; gap:10px; flex-wrap:wrap; }
+
+.message{
+  margin-bottom:12px; max-width:78%;
+  padding:10px 14px; border-radius:14px; position:relative;
+  border:1px solid transparent;
+}
+.user-message{
+  background-color: var(--brand-blue);
+  color:#fff;
+  align-self:flex-end; margin-left:auto;
+  border-radius: 14px 14px 6px 14px;
+  box-shadow: var(--shadow-1);
+}
+.ai-message{
+  background-color: #E9EEF9;
+  color:#1F2937;
+  align-self:flex-start;
+  border-radius: 14px 14px 14px 6px;
+  border:1px solid var(--border);
+}
+[data-theme="dark"] .ai-message{
+  background-color:#1C2230;
+  color:#E0E6F3;
+  border-color: var(--border);
+}
+.loading-message{
+  background-color:#EEF2FF;
+  color:#4B5563;
+  font-style:italic;
+}
+
+.chat-footer{
+  margin-top:8px; text-align:center; font-size:12px; color: var(--text-subtle);
+}
+.chat-footer a{ color: var(--brand-blue); }
+
+/* Markdown */
+.ai-message code{
+  background-color:#EEF2F7;
+  padding:2px 4px; border-radius:4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size:.92em; white-space: pre-wrap;
+}
+.ai-message pre{
+  background-color:#EEF2F7; padding:10px; border-radius:8px;
+  overflow-x:auto; margin:8px 0; border:1px solid var(--border);
+}
+.ai-message pre code{ background:transparent; padding:0; }
+.ai-message p{ margin:.6em 0; }
+.ai-message ul, .ai-message ol{ margin:.6em 0; padding-left:20px; }
+.ai-message table{ border-collapse:collapse; margin:8px 0; width:100%; }
+.ai-message th, .ai-message td{ border:1px solid var(--border); padding:8px; }
+.ai-message th{ background-color:#F3F4F6; }
+[data-theme="dark"] .ai-message code{ background-color:#242A36; }
+[data-theme="dark"] .ai-message pre{ background-color:#242A36; }
+[data-theme="dark"] .ai-message th{ background-color:#232A36; }
+
+/* -------- 响应式 -------- */
+@media (min-width: 768px){
+  .card{ max-width: 720px; }
+}
+
+/* -------- 全局动效（温和） -------- */
+*{ transition: background-color var(--motion-normal) var(--ease),
+               color var(--motion-normal) var(--ease),
+               border-color var(--motion-normal) var(--ease),
+               box-shadow var(--motion-normal) var(--ease),
+               transform var(--motion-fast) var(--ease),
+               opacity var(--motion-normal) var(--ease); }
+
+@keyframes fade-in-up{
+  from{ opacity:0; transform: translateY(6px) scale(0.985); }
+  to{ opacity:1; transform: translateY(0) scale(1); }
+}
+.card, .nav-drawer, .modal-content, .message, .button{
+  animation: fade-in-up var(--motion-slow) var(--ease-emph) both;
+}
+
+/* 减少动态偏好支持 */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation: none !important; }
+}
