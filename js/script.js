@@ -277,9 +277,9 @@ function closeModal() {
 
 // ========== AI 聊天功能 ==========
 // BreathAI API设置
-const AI_API_URL = 'https://api.breathai.top/v1/chat/completions';
-const AI_API_KEY = 'sk-MHxcMqV5LvsWNFUyEV2OOMuOZh6xFYesTyQKnErpIlKzfbWB';
-const AI_MODEL = 'DeepSeek-V3';
+const AI_API_URL = 'http://47.108.139.0:56666/v1/chat/completions';
+const AI_API_KEY = 'sk-7IuLTDQa2bBM9PywPRxSTxJk9WcWVKa7AxPPNRHQTvXLnsV6';
+const AI_MODEL = 'deepseek-v3.1-terminus';
 
 // Minecraft指令专家的系统提示词
 const MINECRAFT_PROMPT = `你是一个 Minecraft 指令师，你需要生成用户想要的 Minecraft 指令，并教导用户相关的指令知识。
@@ -612,3 +612,4 @@ function clearAllData() {
     window.location.reload();
   }
 }
+
